@@ -12,6 +12,21 @@ class PlayScene extends Phaser.Scene {
     this.load.image("battery", "./assets/battery.png");
     this.load.image("spider1", "./assets/spider1.png");
     this.load.image("spider2", "./assets/spider2.png");
+    this.load.image("bones", "./assets/bones.png");
+    this.load.image("rocks1", "./assets/rocks1.png");
+    this.load.image("rocks2", "./assets/rocks2.png");
+    this.load.image("rocks3", "./assets/rocks3.png");
+
+    this.load.spritesheet("spider1Sprite", "spider1Sprite.png", {
+      frameWidth: 186 / 2,
+      frameHeight: 99,
+    });
+
+    this.load.spritesheet("spider2Sprite", "spider2Sprite.png", {
+      frameWidth: 176/2,
+      frameHeight: 109,
+    });
+
   }
 
   create() {
@@ -20,7 +35,9 @@ class PlayScene extends Phaser.Scene {
 
   this.addBackground()
    this.addBattery()
-   this. enableLight()
+   this.addBones()
+   this.addRocks()
+   this.enableGameLight()
 
     this.spider1 = new Enemy(this, 700, 600, "spider1")
     this.spider2 = new Enemy(this, 700, 600, "spider2")
@@ -33,7 +50,6 @@ class PlayScene extends Phaser.Scene {
 
 
   this.player.characterBody.setOnCollide(pair =>{
-    // console.log(pair);
     if(pair.bodyA.type === "enemy") {
       console.log('hurt')
     }
@@ -44,14 +60,13 @@ class PlayScene extends Phaser.Scene {
     }
   })
 
-
    this.handleInputs = new HandleInputs(this)
   }
 
   update(){
     this.player.setAngularVelocity(0)
     this.handleInputs.handleMovement()
-    this.lightMovement()
+    this.gameLightMove()
   }
 
   addBackground(){
@@ -60,7 +75,7 @@ class PlayScene extends Phaser.Scene {
     .setOrigin(0, 0).setPipeline('Light2D').setAlpha(0.5);
   }
 
-  lightMovement(){
+  gameLightMove(){
     this.light.x = this.player.x;
     this.light.y = this.player.y;
   }
@@ -72,10 +87,30 @@ class PlayScene extends Phaser.Scene {
     this.battery.body.type = 'battery'
   }
 
-  enableLight(){
+  enableGameLight(){
     this.lights.enable();
     this.lights.setAmbientColor(0x555555);
     this.light = this.lights.addLight(400, 300, 200).setIntensity(10);
+  }
+
+  addBones(){
+    this.bones = this.matter.add
+    .sprite(900, 500, "bones", null,{ isStatic: true })
+    .setPipeline('Light2D')
+  }
+
+  addRocks(){
+    this.rocks1 = this.matter.add
+    .sprite(900, 700, "rocks1", null,{ isStatic: true })
+    .setPipeline('Light2D')
+
+    this.rocks2 = this.matter.add
+    .sprite(900, 900, "rocks2", null,{ isStatic: true })
+    .setPipeline('Light2D')
+
+    this.rocks3 = this.matter.add
+    .sprite(900, 1100, "rocks3", null,{ isStatic: true })
+    .setPipeline('Light2D')
   }
 
 
