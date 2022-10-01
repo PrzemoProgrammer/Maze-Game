@@ -21,6 +21,7 @@ class PlayScene extends Phaser.Scene {
     this.load.image("rocks3", "rocks3.png");
 
     this.load.json("colliders", "maze_world.json");
+    console.log("sd");
   }
 
   create() {
