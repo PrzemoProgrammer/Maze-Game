@@ -1,5 +1,5 @@
-let score = 0;
-let bestScore = Number(localStorage.getItem("bestScore")) || 0;
+// let score = 0;
+// let bestScore = Number(localStorage.getItem("bestScore")) || 0;
 
 class PlayScene extends Phaser.Scene {
   constructor() {
@@ -19,9 +19,9 @@ class PlayScene extends Phaser.Scene {
     this.load.image("rocks1", "rocks1.png");
     this.load.image("rocks2", "rocks2.png");
     this.load.image("rocks3", "rocks3.png");
+    this.load.image("energyBar", "energyBar.png");
 
     this.load.json("colliders", "maze_world.json");
-    console.log("sd");
   }
 
   create() {
@@ -40,6 +40,10 @@ class PlayScene extends Phaser.Scene {
 
     this.gw = this.background.width;
     this.gh = this.background.height;
+    this.scene.launch("HudScene")
+    // this.scene.start("HudScene")
+
+    this.hudScene = this.scene.get('HudScene');
 
     this.spiders = [
       {
@@ -85,8 +89,9 @@ class PlayScene extends Phaser.Scene {
     this.spider.setCollisionCategory(cat1);
 
     this.player = new Entity(this, this.gw / 2, this.gh / 2, "character");
-    this.spider.setCollisionCategory(cat2);
-    this.spider.setCollidesWith([cat2]);
+
+    this.player.setCollisionCategory(cat2);
+    this.player.setCollidesWith([cat1]);
 
     this.cameras.main.setZoom(0.4);
     this.matter.world.setBounds(0, 0, this.gw, this.gh);
@@ -97,9 +102,20 @@ class PlayScene extends Phaser.Scene {
 
     this.player.characterBody.setOnCollide((pair) => {
       if (pair.bodyA.type === "enemy") {
-        console.log("hurt");
+
+        if(this.player.blockEnemyHit) return
+          this.player.blockEnemyHit = true
+          this.hudScene.healthBar.getDamage()
+          this.player.getHurt(this.blockEnemyHit)
+
+        if(this.hudScene.healthBar.isDead()){
+          console.log("You lost")
+        }
+        
       }
       if (pair.bodyA.type === "battery") {
+        if(this.hudScene.healthBar.isFull()) return
+        // this.hudScene.healthBar.energyUP()
         // this.lights.lights[0].intensity = 100
         // this.lights.lights[0].radius = 800
         // console.log(this.lights);
@@ -107,7 +123,7 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.handleInputs = new HandleInputs(this);
-    this.addColliders();
+  //  this.addColliders();
   }
 
   update() {

@@ -14,7 +14,7 @@ const config = {
     height: 1080,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [PlayScene],
+  scene: [PlayScene, HudScene],
 };
 
 const game = new Phaser.Game(config);
