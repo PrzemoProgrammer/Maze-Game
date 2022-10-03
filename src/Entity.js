@@ -6,7 +6,7 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.y = y;
     this.sprite = sprite;
 
-    this.blockEnemyHit = false
+    this.blockEnemyHit = false;
 
     scene.add.existing(this);
     this.characterBody = this.scene.matter.add.gameObject(this);
@@ -15,7 +15,6 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.frictionStatic = 0;
     this.setScale(0.4);
     this.characterBody.setSize(this.displayWidth / 2, this.displayHeight / 2);
-    console.log(this)
   }
 
   moveLeft() {
@@ -45,12 +44,12 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.setVelocity(0);
   }
 
-  setColor(){
-    this.setTint(0xff0000)
+  setColor() {
+    this.setTint(0xff0000);
     this.scene.time.delayedCall(2000, this.clearTint, [], this);
   }
 
-  setAlpha(){
+  setAlpha() {
     this.scene.tweens.add({
       targets: this,
       alpha: 0.3,
@@ -58,16 +57,13 @@ class Entity extends Phaser.GameObjects.Sprite {
       yoyo: true,
       repeat: 2,
       onComplete: () => {
-        this.blockEnemyHit = false
+        this.blockEnemyHit = false;
       },
     });
   }
 
-  getHurt(){
-
-    this.setColor()
-    this.setAlpha()
+  getHurt() {
+    this.setColor();
+    this.setAlpha();
   }
-
-
 }

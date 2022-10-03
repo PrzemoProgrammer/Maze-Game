@@ -27,45 +27,60 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.anims.create({
       key: "spider_1_walk",
-      frames: ["spider1_1", "spider1_2"],
-      frameRate: 12,
+      frames: [
+        { key: "spider1_1", frame: null },
+        { key: "spider1_2", frame: null },
+      ],
+      frameRate: 5,
+      repeat: -1,
     });
     this.anims.create({
       key: "spider_2_walk",
-      frames: ["spider2_1", "spider2_2"],
-      frameRate: 12,
+      frames: [
+        { key: "spider2_1", frame: null },
+        { key: "spider2_2", frame: null },
+      ],
+      frameRate: 5,
+      repeat: -1,
     });
 
     this.addBackground();
 
     this.gw = this.background.width;
     this.gh = this.background.height;
-    this.scene.launch("HudScene")
+    this.scene.launch("HudScene");
     // this.scene.start("HudScene")
 
-    this.hudScene = this.scene.get('HudScene');
+    this.hudScene = this.scene.get("HudScene");
 
     this.spiders = [
       {
-        x: 1224,
-        y: 1352,
+        x: 1268,
+        y: 1348,
         sprite: "spider1_1",
-        paths: spidersPaths1,
+        anim: "spider_1_walk",
+        paths: spiderPaths3,
       },
       {
-        x: 2180,
-        y: 870,
+        x: 2730,
+        y: 670,
         sprite: "spider1_1",
+        anim: "spider_1_walk",
+        paths: spiderPaths2,
       },
       {
-        x: 3592,
-        y: 2700,
+        x: 3750,
+        y: 2695,
         sprite: "spider2_1",
+        anim: "spider_2_walk",
+        paths: spiderPaths1,
       },
       {
-        x: 1610,
-        y: 2150,
+        x: 1660,
+        y: 2135,
         sprite: "spider2_1",
+        anim: "spider_2_walk",
+        paths: spiderPaths4,
       },
     ];
 
@@ -77,23 +92,38 @@ class PlayScene extends Phaser.Scene {
     // this.spider1 = new Enemy(this, 700, 600, "spider1_1"); //.play("spider_1_walk");
     // this.spider2 = ; //.play("spider_2_walk");
 
-    // this.spiders.forEach((spider) => {
-    //   new Enemy(this, spider.x, spider.y, spider.sprite, spider.paths);
-    // });
+    this.spiders.forEach((spider) => {
+      const enemy = new Enemy(
+        this,
+        spider.x,
+        spider.y,
+        spider.sprite,
+        spider.paths,
+        spider.anim
+      );
+      enemy.startMove();
+    });
 
-    this.spider = new Enemy(this, 3750, 2695, "spider1_1", spidersPaths1);
-    this.spider.startMove();
+    // this.spider = new Enemy(
+    //   this,
+    //   3750,
+    //   2695,
+    //   "spider1_1",
+    //   spidersPaths1,
+    //   "spider_1_walk"
+    // );
+    // this.spider.startMove();
     const cat1 = this.matter.world.nextCategory();
     const cat2 = this.matter.world.nextCategory();
 
-    this.spider.setCollisionCategory(cat1);
+    // this.spider.setCollisionCategory(cat1);
 
     this.player = new Entity(this, this.gw / 2, this.gh / 2, "character");
 
     this.player.setCollisionCategory(cat2);
     this.player.setCollidesWith([cat1]);
 
-    this.cameras.main.setZoom(0.4);
+    this.cameras.main.setZoom(0.35);
     this.matter.world.setBounds(0, 0, this.gw, this.gh);
 
     this.cameras.main.setBounds(0, 0, this.gw, this.gh);
@@ -102,19 +132,17 @@ class PlayScene extends Phaser.Scene {
 
     this.player.characterBody.setOnCollide((pair) => {
       if (pair.bodyA.type === "enemy") {
+        if (this.player.blockEnemyHit) return;
+        this.player.blockEnemyHit = true;
+        this.hudScene.healthBar.getDamage();
+        this.player.getHurt(this.blockEnemyHit);
 
-        if(this.player.blockEnemyHit) return
-          this.player.blockEnemyHit = true
-          this.hudScene.healthBar.getDamage()
-          this.player.getHurt(this.blockEnemyHit)
-
-        if(this.hudScene.healthBar.isDead()){
-          console.log("You lost")
+        if (this.hudScene.healthBar.isDead()) {
+          console.log("You lost");
         }
-        
       }
       if (pair.bodyA.type === "battery") {
-        if(this.hudScene.healthBar.isFull()) return
+        if (this.hudScene.healthBar.isFull()) return;
         // this.hudScene.healthBar.energyUP()
         // this.lights.lights[0].intensity = 100
         // this.lights.lights[0].radius = 800
@@ -123,7 +151,7 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.handleInputs = new HandleInputs(this);
-  //  this.addColliders();
+    //  this.addColliders();
   }
 
   update() {
