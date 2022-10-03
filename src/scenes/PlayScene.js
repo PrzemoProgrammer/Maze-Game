@@ -49,7 +49,6 @@ class PlayScene extends Phaser.Scene {
     this.gw = this.background.width;
     this.gh = this.background.height;
     this.scene.launch("HudScene");
-    // this.scene.start("HudScene")
 
     this.hudScene = this.scene.get("HudScene");
 
@@ -101,29 +100,19 @@ class PlayScene extends Phaser.Scene {
         spider.paths,
         spider.anim
       );
+      enemy.setPipeline("Light2D");
       enemy.startMove();
     });
 
-    // this.spider = new Enemy(
-    //   this,
-    //   3750,
-    //   2695,
-    //   "spider1_1",
-    //   spidersPaths1,
-    //   "spider_1_walk"
-    // );
-    // this.spider.startMove();
     const cat1 = this.matter.world.nextCategory();
     const cat2 = this.matter.world.nextCategory();
-
-    // this.spider.setCollisionCategory(cat1);
 
     this.player = new Entity(this, this.gw / 2, this.gh / 2, "character");
 
     this.player.setCollisionCategory(cat2);
     this.player.setCollidesWith([cat1]);
 
-    this.cameras.main.setZoom(0.35);
+    this.cameras.main.setZoom(1);
     this.matter.world.setBounds(0, 0, this.gw, this.gh);
 
     this.cameras.main.setBounds(0, 0, this.gw, this.gh);
@@ -157,7 +146,7 @@ class PlayScene extends Phaser.Scene {
   update() {
     this.player.setAngularVelocity(0);
     this.handleInputs.handleMovement();
-    this.gameLightMove();
+    this.lightFollowPlayer();
   }
 
   addColliders() {
@@ -184,7 +173,7 @@ class PlayScene extends Phaser.Scene {
     //  .setAlpha(0.5);
   }
 
-  gameLightMove() {
+  lightFollowPlayer() {
     this.light.x = this.player.x;
     this.light.y = this.player.y;
   }
