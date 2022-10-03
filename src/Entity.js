@@ -6,8 +6,10 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.y = y;
     this.sprite = sprite;
 
+
     this.isImmortal = false
     this.healthBar = {}
+
     scene.add.existing(this);
     this.characterBody = this.scene.matter.add.gameObject(this);
     this.setBounce(0, 0);
@@ -15,7 +17,6 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.frictionStatic = 0;
     this.setScale(0.4);
     this.characterBody.setSize(this.displayWidth / 2, this.displayHeight / 2);
-    console.log(this)
   }
 
   moveLeft() {
@@ -57,12 +58,14 @@ class Entity extends Phaser.GameObjects.Sprite {
       yoyo: true,
       repeat: 2,
       onComplete: () => {
+
         this.isImmortal = false
         this.clearTint()
         cb()
       },
     });
   }
+
 
   getHurt(cb){
     this.isImmortal = true
@@ -74,6 +77,4 @@ class Entity extends Phaser.GameObjects.Sprite {
   isDead() {
     return this.healthBar.isDead()
   }
-
-
 }
