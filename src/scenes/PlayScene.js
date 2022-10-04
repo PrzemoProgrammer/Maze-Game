@@ -88,8 +88,10 @@ class PlayScene extends Phaser.Scene {
     this.addRocks();
     this.enableGameLight();
 
-    // this.spider1 = new Enemy(this, 700, 600, "spider1_1"); //.play("spider_1_walk");
-    // this.spider2 = ; //.play("spider_2_walk");
+    const wallCategory = 1;
+
+    const cat1 = this.matter.world.nextCategory();
+    const cat2 = this.matter.world.nextCategory();
 
     this.spiders.forEach((spider) => {
       const enemy = new Enemy(
@@ -100,33 +102,23 @@ class PlayScene extends Phaser.Scene {
         spider.paths,
         spider.anim
       );
-      enemy.setPipeline("Light2D");
+      enemy.setPipeline("Light2D").setSensor(true);
+      enemy.setCollisionCategory(cat1);
       enemy.startMove();
     });
 
-
-    this.spider = new Enemy(this, 3750, 2695, "spider1_1", spidersPaths1);
-    this.spider.setSensor(true)
-    this.spider.startMove();
-    
-    const wallCategory = 1;
-    const cat1 = this.matter.world.nextCategory();
-    const cat2 = this.matter.world.nextCategory();
-   
-    this.spider.setCollisionCategory(cat1);
     this.battery.setCollisionCategory(cat2);
     this.rocks1.setCollisionCategory(cat2);
-    
+
     this.player = new Entity(this, this.gw / 2, this.gh / 2, "character");
 
-    this.hudScene.events.on("create",()=>{
-      this.player.healthBar = this.hudScene.healthBar
-    })
+    this.hudScene.events.on("create", () => {
+      this.player.healthBar = this.hudScene.healthBar;
+    });
 
     this.addColliders();
 
-    // this.player.setCollisionCategory(cat1);
-    this.player.setCollidesWith([ cat1, cat2]);
+    this.player.setCollidesWith([cat1, cat2]);
 
     this.cameras.main.setZoom(1);
     this.matter.world.setBounds(0, 0, this.gw, this.gh);
@@ -137,30 +129,21 @@ class PlayScene extends Phaser.Scene {
 
     this.player.characterBody.setOnCollide((pair) => {
       if (pair.bodyA.type === "enemy") {
-        if (this.player.blockEnemyHit) return;
-        this.player.blockEnemyHit = true;
-        this.hudScene.healthBar.getDamage();
-        this.player.getHurt(this.blockEnemyHit);
+        if (this.player.isImmortal) return;
 
-        if(this.player.isImmortal) return
-         
-          
-          this.player.setCollidesWith([wallCategory, cat2]);
+        this.player.setCollidesWith([wallCategory, cat2]);
 
-       
-          this.player.getHurt(()=>{
-            this.player.setCollidesWith([ wallCategory, cat1, cat2]);
-          })
-        
+        this.player.getHurt(() => {
+          this.player.setCollidesWith([wallCategory, cat1, cat2]);
+        });
 
-        if(this.player.isDead()){
-          console.log("You lost")
+        if (this.player.isDead()) {
+          console.log("You lost");
         }
       }
       if (pair.bodyA.type === "battery") {
-      
-        if(this.player.healthBar.isFull()) return
-        this.hudScene.healthBar.energyUP()
+        if (this.player.healthBar.isFull()) return;
+        this.hudScene.healthBar.energyUP();
 
         // this.lights.lights[0].intensity = 100
         // this.lights.lights[0].radius = 800
@@ -169,7 +152,6 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.handleInputs = new HandleInputs(this);
-
   }
 
   update() {
@@ -194,7 +176,7 @@ class PlayScene extends Phaser.Scene {
     }
 
     this.dupa = this.matter.world.add(composite);
-    console.log(this.dupa)
+    console.log(this.dupa);
   }
 
   addBackground() {
