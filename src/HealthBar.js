@@ -40,7 +40,9 @@ class HealthBar {
   }
 
   isDead() {
-    return this.energyMask.x <= this.energyBar.x - this.energyBar.displayWidth;
+    return (
+      this.energyMask.x - 1 <= this.energyBar.x - this.energyBar.displayWidth
+    );
   }
 
   isFull() {

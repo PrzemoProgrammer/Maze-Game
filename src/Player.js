@@ -22,13 +22,12 @@ class Player extends Phaser.GameObjects.Sprite {
 
     this.characterBody = this.scene.matter.add.gameObject(this, bodyConfig);
     this.setBounce(0, 0);
-    // this.friction = 0;
-    // this.frictionStatic = 0;
+    this.setFriction(0);
+    this.setFrictionStatic(0);
     this.setScale(0.4);
   }
 
   moveLeft() {
-    // this.character.flipX = true
     this.setVelocityX(-10);
     // this.character.play(this.state.walkRight, true)
   }
