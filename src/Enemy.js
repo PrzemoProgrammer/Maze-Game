@@ -9,7 +9,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     this.characterBody = this.scene.matter.add.gameObject(this);
     this.body.type = "enemy";
     this.WALK_ANIM = WALK_ANIM;
-    this.speed = 1;
+    this.speed = 0.3;
   }
 
   startMove() {
@@ -50,19 +50,22 @@ class Enemy extends Phaser.GameObjects.Sprite {
     const absY = Math.abs(arrOfPoints[0].y - this.y);
     const vectorLength = new Phaser.Math.Vector2(absX, absY).length();
 
-    const pathDuration = vectorLength / 0.2;
+    const pathDuration = vectorLength / this.speed;
 
     const angleBetweenPoints = Phaser.Math.Angle.BetweenPoints(
       this,
       arrOfPoints[0]
     );
-    // this.rotation = angleBetweenPoints;
 
-    this.scene.tweens.add({
-      targets: this,
-      duration: 200,
-      rotation: angleBetweenPoints,
-    });
+    if (angleBetweenPoints > -1.5) {
+      this.scene.tweens.add({
+        targets: this,
+        duration: 200,
+        rotation: angleBetweenPoints,
+      });
+    } else {
+      this.rotation = angleBetweenPoints;
+    }
 
     this.scene.tweens.add({
       targets: this,

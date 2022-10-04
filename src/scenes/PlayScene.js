@@ -65,16 +65,14 @@ class PlayScene extends Phaser.Scene {
       },
     ];
 
-    this.addBattery();
-    this.addBones();
-    this.addRocks();
+
     this.addGameWinLine()
+
     this.enableGameLight();
 
     const wallCategory = 1;
 
     const cat1 = this.matter.world.nextCategory();
-    const cat2 = this.matter.world.nextCategory();
 
     this.spiders.forEach((spider) => {
       const enemy = new Enemy(
@@ -90,10 +88,34 @@ class PlayScene extends Phaser.Scene {
       enemy.startMove();
     });
 
-    this.battery.setCollisionCategory(cat2);
-    this.rocks1.setCollisionCategory(cat2);
+    gameObjects.forEach((gameObj) => {
+      const obj = this.matter.add.sprite(gameObj.x, gameObj.y, gameObj.sprite);
 
-    this.player = new Entity(this, this.gw / 2, this.gh / 2, "character");
+      if (gameObj.sprite === BATTERY) {
+        obj.setSensor(true);
+        obj.body.type = "battery";
+      } else {
+        //obj.setSize(150, 150);
+        const bodyConfig = {
+          type: "rectangle",
+          width: obj.displayWidth * 1.25,
+          height: obj.displayHeight * 1.45,
+        };
+
+        const bodyOptions = {
+          render: { sprite: { xOffset: 0, yOffset: 0 } },
+        };
+
+        obj.setBody(bodyConfig, bodyOptions);
+      }
+
+      obj
+        .setStatic(true)
+        .setCollisionCategory(wallCategory)
+        .setPipeline("Light2D");
+    });
+
+    this.player = new Player(this, 260, 2040, "character");
 
     this.hudScene.events.on("create", () => {
       this.player.healthBar = this.hudScene.healthBar;
@@ -101,12 +123,10 @@ class PlayScene extends Phaser.Scene {
 
     this.addColliders();
 
-    this.player.setCollidesWith([cat1, cat2]);
+    this.player.setCollidesWith([cat1]);
 
-    this.cameras.main.setZoom(1);
+    this.cameras.main.setZoom(0.3);
     this.matter.world.setBounds(0, 0, this.gw, this.gh);
-
-    this.cameras.main.setBounds(0, 0, this.gw, this.gh);
 
     this.cameras.main.startFollow(this.player);
 
@@ -115,19 +135,22 @@ class PlayScene extends Phaser.Scene {
       if (pair.bodyA.type === "enemy") {
         if (this.player.isImmortal) return;
 
-        this.player.setCollidesWith([wallCategory, cat2]);
+        this.player.setCollidesWith([wallCategory]);
 
         this.player.getHurt(() => {
-          this.player.setCollidesWith([wallCategory, cat1, cat2]);
+          this.player.setCollidesWith([wallCategory, cat1]);
         });
 
         if (this.player.isDead()) {
           console.log("You lost");
         }
       }
+
       if (pair.bodyA.type === "battery") {
-        if (this.player.healthBar.isFull()) return;
-        this.hudScene.healthBar.energyUP();
+        if (this.player.healthBar.isFull() || pair.bodyA.isUsed) return;
+        pair.bodyA.isUsed = true;
+        pair.bodyA.gameObject.destroy();
+        this.player.healthBar.energyUP();
 
         // this.lights.lights[0].intensity = 100
         // this.lights.lights[0].radius = 800
@@ -163,8 +186,7 @@ class PlayScene extends Phaser.Scene {
       Composite.addBody(composite, body);
     }
 
-    this.dupa = this.matter.world.add(composite);
-    console.log(this.dupa);
+    this.matter.world.add(composite);
   }
 
   addBackground() {
@@ -178,66 +200,10 @@ class PlayScene extends Phaser.Scene {
     this.light.y = this.player.y;
   }
 
-  addBattery() {
-    this.battery = this.matter.add
-      .sprite(700, 500, "battery", null, { isStatic: true })
-      .setPipeline("Light2D");
-    this.battery.body.type = "battery";
-  }
-
   enableGameLight() {
     this.lights.enable();
     this.lights.setAmbientColor(0x555555);
     this.light = this.lights.addLight(400, 300, 5000).setIntensity(20);
-  }
-
-  addBones() {
-    this.bones = this.matter.add
-      .sprite(900, 500, "bones", null, { isStatic: true })
-      .setPipeline("Light2D");
-  }
-
-  addRocks() {
-    this.rocks1 = this.matter.add
-      .sprite(900, 700, "rocks1", null, { isStatic: true })
-      .setPipeline("Light2D");
-
-    this.rocks2 = this.matter.add
-      .sprite(900, 900, "rocks2", null, { isStatic: true })
-      .setPipeline("Light2D");
-
-    this.rocks3 = this.matter.add
-      .sprite(900, 1100, "rocks3", null, { isStatic: true })
-      .setPipeline("Light2D");
-
-
-
-
-
-      
-      // this.spiders = [
-      //   {
-      //     x: 1224,
-      //     y: 1352,
-      //     sprite: "spider1_1",
-      //     paths: spidersPaths1,
-      //   },
-      //   {
-      //     x: 2180,
-      //     y: 870,
-      //     sprite: "spider1_1",
-      //   },
-      //   {
-      //     x: 3592,
-      //     y: 2700,
-      //     sprite: "spider2_1",
-      //   },
-      //   {
-      //     x: 1610,
-      //     y: 2150,
-      //     sprite: "spider2_1",
-      //   },
-      // ];
   }
 
   addGameWinLine(){

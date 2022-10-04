@@ -1,4 +1,4 @@
-class Entity extends Phaser.GameObjects.Sprite {
+class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, sprite) {
     super(scene, x, y, sprite);
     this.scene = scene;
@@ -6,17 +6,25 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.y = y;
     this.sprite = sprite;
 
-
-    this.isImmortal = false
-    this.healthBar = {}
+    this.isImmortal = false;
+    this.healthBar = {};
 
     scene.add.existing(this);
-    this.characterBody = this.scene.matter.add.gameObject(this);
+
+    const bodyConfig = {
+      shape: {
+        type: "rectangle",
+        width: this.displayWidth / 2,
+        height: 110,
+      },
+      render: { sprite: { xOffset: 0, yOffset: 0.2 } },
+    };
+
+    this.characterBody = this.scene.matter.add.gameObject(this, bodyConfig);
     this.setBounce(0, 0);
-    this.friction = 0;
-    this.frictionStatic = 0;
+    // this.friction = 0;
+    // this.frictionStatic = 0;
     this.setScale(0.4);
-    this.characterBody.setSize(this.displayWidth / 2, this.displayHeight / 2);
   }
 
   moveLeft() {
@@ -46,11 +54,11 @@ class Entity extends Phaser.GameObjects.Sprite {
     this.setVelocity(0);
   }
 
-  setRedColor(){
-    this.setTint(0xff0000)
+  setRedColor() {
+    this.setTint(0xff0000);
   }
 
-  flick(cb){
+  flick(cb) {
     this.scene.tweens.add({
       targets: this,
       alpha: 0.3,
@@ -58,23 +66,21 @@ class Entity extends Phaser.GameObjects.Sprite {
       yoyo: true,
       repeat: 2,
       onComplete: () => {
-
-        this.isImmortal = false
-        this.clearTint()
-        cb()
+        this.isImmortal = false;
+        this.clearTint();
+        cb();
       },
     });
   }
 
-
-  getHurt(cb){
-    this.isImmortal = true
-    this.healthBar.getDamage()
-    this.setRedColor()
-    this.flick(cb)
+  getHurt(cb) {
+    this.isImmortal = true;
+    this.healthBar.getDamage();
+    this.setRedColor();
+    this.flick(cb);
   }
 
   isDead() {
-    return this.healthBar.isDead()
+    return this.healthBar.isDead();
   }
 }
