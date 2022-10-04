@@ -6,24 +6,6 @@ class PlayScene extends Phaser.Scene {
     super("PlayScene");
   }
 
-  preload() {
-    this.load.setPath("./src/assets");
-    this.load.image("background", "background.png");
-    this.load.image("character", "character.png");
-    this.load.image("battery", "battery.png");
-    this.load.image("spider1_1", "spider1_1.png");
-    this.load.image("spider1_2", "spider1_2.png");
-    this.load.image("spider2_1", "spider2_1.png");
-    this.load.image("spider2_2", "spider2_2.png");
-    this.load.image("bones", "bones.png");
-    this.load.image("rocks1", "rocks1.png");
-    this.load.image("rocks2", "rocks2.png");
-    this.load.image("rocks3", "rocks3.png");
-    this.load.image("energyBar", "energyBar.png");
-
-    this.load.json("colliders", "maze_world.json");
-  }
-
   create() {
     this.anims.create({
       key: "spider_1_walk",
@@ -82,6 +64,9 @@ class PlayScene extends Phaser.Scene {
         paths: spiderPaths4,
       },
     ];
+
+
+    this.addGameWinLine()
 
     this.enableGameLight();
 
@@ -146,6 +131,7 @@ class PlayScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player);
 
     this.player.characterBody.setOnCollide((pair) => {
+      console.log(pair)
       if (pair.bodyA.type === "enemy") {
         if (this.player.isImmortal) return;
 
@@ -170,6 +156,10 @@ class PlayScene extends Phaser.Scene {
         // this.lights.lights[0].radius = 800
         // console.log(this.lights);
       }
+
+      if (pair.bodyA.type === "finishLine") {
+        console.log("You Win")
+    }
     });
 
     this.handleInputs = new HandleInputs(this);
@@ -214,5 +204,16 @@ class PlayScene extends Phaser.Scene {
     this.lights.enable();
     this.lights.setAmbientColor(0x555555);
     this.light = this.lights.addLight(400, 300, 5000).setIntensity(20);
+  }
+
+  addGameWinLine(){
+    this.winLine = this.matter.add.rectangle(
+      this.gw - 33,
+      this.gh - 2710,
+      100,
+      100,
+      { isStatic: true }
+    );
+    this.winLine.type = "finishLine";
   }
 }
