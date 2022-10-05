@@ -20,6 +20,15 @@ class MenuScene extends Phaser.Scene {
     this.load.image("menuSceneBackground", "menuSceneBackground.png");
     this.load.image("menuSceneText", "menuSceneText.png");
 
+    for (let i = 1; i <= 5; i++) {
+      for (let j = 1; j <= 6; j++) {
+        this.load.image(
+          `Character ${i}${j}`,
+          `Walking Character ${i}/0${j}.png`
+        );
+      }
+    }
+
     this.load.json("colliders", "maze_world.json");
   }
 

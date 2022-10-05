@@ -27,12 +27,18 @@ class Player extends Phaser.GameObjects.Sprite {
     this.setScale(0.4);
   }
 
+  onMove() {
+    this.play(this.sprite.slice(0, -1) + " walk", true);
+  }
+
   moveLeft() {
+    this.setFlipX(true);
     this.setVelocityX(-10);
     // this.character.play(this.state.walkRight, true)
   }
 
   moveRight() {
+    this.setFlipX(false);
     // this.character.flipX = false
     this.setVelocityX(10);
     // this.character.play(this.state.walkRight, true);

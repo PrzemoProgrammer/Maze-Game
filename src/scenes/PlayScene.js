@@ -1,5 +1,4 @@
-// let score = 0;
-// let bestScore = Number(localStorage.getItem("bestScore")) || 0;
+const characters = [""];
 
 class PlayScene extends Phaser.Scene {
   constructor() {
@@ -7,6 +6,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    const charID = new URLSearchParams(window.location.search).get("charid");
+
     this.createSpiderAnimations();
     this.addBackground();
 
@@ -28,7 +29,21 @@ class PlayScene extends Phaser.Scene {
 
     this.createGameObjects();
 
-    this.player = new Player(this, 260, 2040, "character");
+    for (let i = 1; i <= 5; i++) {
+      const frames = [];
+      for (let j = 1; j <= 6; j++) {
+        frames.push({ key: `Character ${i}${j}`, frame: null });
+      }
+
+      const anim = this.anims.create({
+        key: `Character ${i} walk`,
+        frames,
+        frameRate: 20,
+      });
+    }
+
+    this.player = new Player(this, 260, 2040, `Character ${charID}1`);
+
     this.player.setCollidesWith([this.wallCategory, this.baseCategory]);
 
     this.hudScene.events.on("create", () => {
