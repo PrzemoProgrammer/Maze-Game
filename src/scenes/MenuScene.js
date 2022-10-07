@@ -17,8 +17,9 @@ class MenuScene extends Phaser.Scene {
     this.load.image("rocks2", "rocks2.png");
     this.load.image("rocks3", "rocks3.png");
     this.load.image("energyBar", "energyBar.png");
-    this.load.image("menuSceneBackground", "menuSceneBackground.png");
-    this.load.image("menuSceneText", "menuSceneText.png");
+    //this.load.image("menuSceneBackground", "menuSceneBackground.png");
+    this.load.image("jungleText", "jungleText.png");
+    this.load.image("button", "button.png");
 
     for (let i = 1; i <= 5; i++) {
       for (let j = 1; j <= 6; j++) {
@@ -33,13 +34,35 @@ class MenuScene extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add
-      .sprite(0, 0, "menuSceneBackground")
-      .setOrigin(0, 0)
-      .setDisplaySize(this.game.config.width, this.game.config.height);
-    this.background.setInteractive();
+    this.gw = this.game.config.width;
+    this.gh = this.game.config.height;
+    this.cameras.main.setBackgroundColor(0xffffff);
 
-    this.input.on("pointerdown", () => {
+    this.add
+      .image(this.gw / 2, 40, "jungleText")
+      .setOrigin(0.5, 0)
+      .setScale(0.1);
+
+    this.add
+      .text(
+        this.gw / 2,
+        this.gh / 2,
+        "USE YOUR ARROW KEYS TO NAVIGATE YOUR WAY OUT OF THE DENSE" +
+          "TRIANGLE OF THE COMPLEXITY JUNGLE. " +
+          "AVOID THOSE PESKY BUGS BUT KEEP AN" +
+          "EYE OUT FOR SPOT POWERUPS" +
+          "IT'S A RACE AGAINST THE CLOCK",
+        { align: "center", font: "30px Arial", color: "black" }
+      )
+      .setOrigin(0.5)
+      .setWordWrapWidth(this.gw * 0.8);
+
+    const playButton = this.add
+      .image(this.gw / 2, this.gh - 40, "button")
+      .setInteractive()
+      .setOrigin(0.5, 1);
+
+    playButton.on("pointerdown", () => {
       this.scene.start("PlayScene");
     });
   }

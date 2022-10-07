@@ -2,6 +2,20 @@
 <html>
   <head>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+
+    <style>
+      .jungle {
+        width: 280px;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
     <script src="./src/objects.js"></script>
@@ -17,5 +31,11 @@
     <script src="./src/HandleInputs.js"></script>
     <script src="./src/HealthBar.js"></script>
     <script src="./src/Timer.js"></script>
+
+    <img class="jungle" src="/src/assets/jungleText.png" />
+
+    <div id="GameCanvas"></div>
+    <p>FIND YOUR WAY OUT...</p>
+    <p>BEFORE IT's TOO LATE!</p>
   </body>
 </html>

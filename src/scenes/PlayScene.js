@@ -140,6 +140,7 @@ class PlayScene extends Phaser.Scene {
       if (this.player.isDead()) {
         console.log("You lost");
         // AJAX REQUEST HERE
+        this.scene.stop("HudScene");
         this.scene.start("MenuScene");
       }
     }
@@ -156,6 +157,7 @@ class PlayScene extends Phaser.Scene {
     if (pair.bodyA.type === "finishLine") {
       console.log("You won");
       // AJAX REQUEST HERE
+      this.scene.stop("HudScene");
       this.scene.start("MenuScene");
     }
   }

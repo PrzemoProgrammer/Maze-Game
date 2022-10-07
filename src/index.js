@@ -10,11 +10,12 @@ const config = {
 
   scale: {
     mode: Phaser.Scale.FIT,
-    width: 1920,
-    height: 1080,
+    width: 1280,
+    height: 720,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [MenuScene,PlayScene, HudScene ],
+  parent: "GameCanvas",
+  scene: [MenuScene, PlayScene, HudScene],
 };
 
 const game = new Phaser.Game(config);
