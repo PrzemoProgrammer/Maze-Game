@@ -17,22 +17,18 @@ class HandleInputs {
   handleMovement() {
     if (this.cursors.right.isDown) {
       this.scene.player.moveRight();
-      this.scene.player.onMove();
     }
 
     if (this.cursors.left.isDown) {
       this.scene.player.moveLeft();
-      this.scene.player.onMove();
     }
 
     if (this.cursors.up.isDown) {
       this.scene.player.moveDown();
-      this.scene.player.onMove();
     }
 
     if (this.cursors.down.isDown) {
       this.scene.player.moveUp();
-      this.scene.player.onMove();
     }
   }
 

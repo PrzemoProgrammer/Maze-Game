@@ -5,6 +5,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.x = x;
     this.y = y;
     this.sprite = sprite;
+    this.speed = 5;
 
     this.isImmortal = false;
     this.healthBar = {};
@@ -33,24 +34,28 @@ class Player extends Phaser.GameObjects.Sprite {
 
   moveLeft() {
     this.setFlipX(true);
-    this.setVelocityX(-10);
+    this.setVelocityX(-this.speed);
+    this.onMove();
     // this.character.play(this.state.walkRight, true)
   }
 
   moveRight() {
     this.setFlipX(false);
     // this.character.flipX = false
-    this.setVelocityX(10);
+    this.setVelocityX(this.speed);
+    this.onMove();
     // this.character.play(this.state.walkRight, true);
   }
 
   moveDown() {
-    this.setVelocityY(-10);
+    this.setVelocityY(-this.speed);
+    this.onMove();
     // this.character.play(this.state.walkRight, true);
   }
 
   moveUp() {
-    this.setVelocityY(10);
+    this.setVelocityY(this.speed);
+    this.onMove();
     // this.character.play(this.state.walkRight, true);
   }
 

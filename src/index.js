@@ -15,7 +15,7 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   parent: "GameCanvas",
-  scene: [MenuScene, PlayScene, HudScene],
+  scene: [MenuScene, PlayScene, HudScene, EndScene],
 };
 
 const game = new Phaser.Game(config);

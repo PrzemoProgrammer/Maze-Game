@@ -1,6 +1,6 @@
-class MenuScene extends Phaser.Scene {
+class EndScene extends Phaser.Scene {
   constructor() {
-    super("MenuScene");
+    super("EndScene");
   }
 
   preload() {
@@ -52,7 +52,8 @@ class MenuScene extends Phaser.Scene {
       .text(
         this.gw / 2,
         this.gh / 2,
-        "USE YOUR ARROW KEYS TO NAVIGATE YOUR WAY OUT OF THE DENSE" +
+        "@@@@@@@@@@@@@ END SCENE DESCRIPTION! @@@@@@@@@@@@@" +
+          "USE YOUR ARROW KEYS TO NAVIGATE YOUR WAY OUT OF THE DENSE" +
           "TRIANGLE OF THE COMPLEXITY JUNGLE. " +
           "AVOID THOSE PESKY BUGS BUT KEEP AN" +
           "EYE OUT FOR SPOT POWERUPS" +

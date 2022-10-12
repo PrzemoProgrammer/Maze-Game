@@ -1,5 +1,3 @@
-const characters = [""];
-
 class PlayScene extends Phaser.Scene {
   constructor() {
     super("PlayScene");
@@ -62,6 +60,15 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.handleInputs = new HandleInputs(this);
+
+    this.isMobile =
+      this.game.device.os.android ||
+      this.game.device.os.iPhone ||
+      this.game.device.os.iPad;
+
+    if (this.isMobile) {
+      new JoyStickController(this);
+    }
   }
 
   update() {
@@ -140,8 +147,10 @@ class PlayScene extends Phaser.Scene {
       if (this.player.isDead()) {
         console.log("You lost");
         // AJAX REQUEST HERE
+        // const RESULT = this.scene.get("HudScene").timer.result
+
         this.scene.stop("HudScene");
-        this.scene.start("MenuScene");
+        this.scene.start("EndScene");
       }
     }
 
@@ -157,8 +166,10 @@ class PlayScene extends Phaser.Scene {
     if (pair.bodyA.type === "finishLine") {
       console.log("You won");
       // AJAX REQUEST HERE
+      // const RESULT = this.scene.get("HudScene").timer.result
+
       this.scene.stop("HudScene");
-      this.scene.start("MenuScene");
+      this.scene.start("EndScene");
     }
   }
   createSpiderAnimations() {
