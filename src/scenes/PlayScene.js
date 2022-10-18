@@ -4,7 +4,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    const charID = new URLSearchParams(window.location.search).get("charid");
+    const charID =
+      new URLSearchParams(window.location.search).get("charid") || "1";
 
     this.createSpiderAnimations();
     this.addBackground();
@@ -27,7 +28,7 @@ class PlayScene extends Phaser.Scene {
 
     this.createGameObjects();
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 4; i++) {
       const frames = [];
       for (let j = 1; j <= 6; j++) {
         frames.push({ key: `Character ${i}${j}`, frame: null });

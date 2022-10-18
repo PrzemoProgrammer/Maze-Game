@@ -5,8 +5,10 @@ class HealthBar {
     this.y = y;
     this.sprite = sprite;
 
+    this.hits = 0;
+
     this.text = this.scene.add.text(this.x, this.y, "ENERGY", {
-      fontFamily: "Georgia",
+      fontFamily: "ESCAPE",
       fontSize: "70px",
       color: "#FFFFFF",
       stroke: "#000000",
@@ -17,35 +19,45 @@ class HealthBar {
     this.energyBar = this.scene.add
       .sprite(
         this.text.x + this.text.displayWidth + 30,
-        this.text.y + this.text.displayHeight / 2,
+        this.text.y + this.text.displayHeight / 2 - 7,
         this.sprite
       )
-      .setOrigin(0, 0.5);
-    this.energyMask = this.scene.add
-      .sprite(this.energyBar.x, this.energyBar.y, this.sprite)
       .setOrigin(0, 0.5)
-      .setVisible(false);
-    this.energyBar.mask = new Phaser.Display.Masks.BitmapMask(
-      this.scene,
-      this.energyMask
-    );
+      .setScale(1.2);
   }
 
   getDamage() {
-    this.energyMask.x -= this.energyBar.displayWidth / 3;
+    console.log(1);
+    this.hits++;
+    this.updateTexture();
+  }
+
+  updateTexture() {
+    let texture = null;
+    switch (this.hits) {
+      case 0:
+        texture = "energyBar1";
+        break;
+      case 1:
+        texture = "energyBar2";
+        break;
+      case 2:
+        texture = "energyBar3";
+        break;
+    }
+    this.energyBar.setTexture(texture);
   }
 
   energyUP() {
-    this.energyMask.x += this.energyBar.displayWidth / 3;
+    this.hits--;
+    this.updateTexture();
   }
 
   isDead() {
-    return (
-      this.energyMask.x - 1 <= this.energyBar.x - this.energyBar.displayWidth
-    );
+    return this.hits === 3;
   }
 
   isFull() {
-    return this.energyMask.x === this.energyBar.x;
+    return this.hits === 0;
   }
 }

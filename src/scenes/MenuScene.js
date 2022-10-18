@@ -21,12 +21,15 @@ class MenuScene extends Phaser.Scene {
     this.load.image("rocks1", "rocks1.png");
     this.load.image("rocks2", "rocks2.png");
     this.load.image("rocks3", "rocks3.png");
-    this.load.image("energyBar", "energyBar.png");
+    this.load.image("energyBar1", "energyBar1.png");
+    this.load.image("energyBar2", "energyBar2.png");
+    this.load.image("energyBar3", "energyBar3.png");
+
     //this.load.image("menuSceneBackground", "menuSceneBackground.png");
     this.load.image("jungleText", "jungleText.png");
     this.load.image("button", "button.png");
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 4; i++) {
       for (let j = 1; j <= 6; j++) {
         this.load.image(
           `Character ${i}${j}`,
