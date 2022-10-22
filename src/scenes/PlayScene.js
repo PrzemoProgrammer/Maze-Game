@@ -45,9 +45,9 @@ class PlayScene extends Phaser.Scene {
 
     this.player.setCollidesWith([this.wallCategory, this.baseCategory]);
 
-    this.hudScene.events.on("create", () => {
-      this.player.healthBar = this.hudScene.healthBar;
-    });
+    // this.hudScene.events.on("create", () => {
+    //   this.player.healthBar = this.hudScene.healthBar;
+    // });
 
     this.addColliders();
 
@@ -141,25 +141,26 @@ class PlayScene extends Phaser.Scene {
 
       this.player.setCollidesWith([this.wallCategory]);
 
+      this.hudScene.timer.subtractTime(5);
       this.player.getHurt(() => {
         this.player.setCollidesWith([this.wallCategory, this.baseCategory]);
       });
 
-      if (this.player.isDead()) {
-        console.log("You lost");
-        // AJAX REQUEST HERE
-        // const RESULT = this.scene.get("HudScene").timer.result
+      // if (this.player.isDead()) {
+      //   console.log("You lost");
+      //   // AJAX REQUEST HERE
+      //   // const RESULT = this.scene.get("HudScene").timer.result
 
-        this.scene.stop("HudScene");
-        this.scene.start("EndScene");
-      }
+      //   this.scene.stop("HudScene");
+      //   this.scene.start("EndScene");
+      // }
     }
 
     if (pair.bodyA.type === "battery") {
-      if (this.player.healthBar.isFull() || pair.bodyA.isUsed) return;
+      if (pair.bodyA.isUsed) return;
       pair.bodyA.isUsed = true;
       pair.bodyA.gameObject.destroy();
-      this.player.healthBar.energyUP();
+      this.hudScene.timer.addTime(5);
       // this.lights.lights[0].intensity = 100
       // this.lights.lights[0].radius = 800
     }

@@ -85,7 +85,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
   getHurt(cb) {
     this.isImmortal = true;
-    this.healthBar.getDamage();
+    // this.healthBar.getDamage();
     this.setRedColor();
     this.flick(cb);
   }

@@ -27,7 +27,6 @@ class HealthBar {
   }
 
   getDamage() {
-    console.log(1);
     this.hits++;
     this.updateTexture();
   }
