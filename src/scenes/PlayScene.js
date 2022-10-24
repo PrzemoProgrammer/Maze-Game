@@ -168,7 +168,7 @@ class PlayScene extends Phaser.Scene {
     if (pair.bodyA.type === "finishLine") {
       console.log("You won");
       // AJAX REQUEST HERE
-      // const RESULT = this.scene.get("HudScene").timer.result
+      // this.score
 
       this.scene.stop("HudScene");
       this.scene.start("EndScene");

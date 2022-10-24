@@ -15,10 +15,11 @@ class HudScene extends Phaser.Scene {
     console.log(this.score);
 
     this.timer.updateTimer(() => {
-      console.log(this.score);
-      // this.scene.stop();
-      // this.playScene.scene.stop();
-      // this.scene.start("EndScene");
+      // AJAX REQUEST HERE
+      // this.score
+      this.scene.stop();
+      this.playScene.scene.stop();
+      this.scene.start("EndScene");
     });
   }
 
