@@ -8,18 +8,21 @@ class HudScene extends Phaser.Scene {
     // this.healthBar = new HealthBar(this, 40, 40, "energyBar1");
     this.score = null;
     this.timer = new Timer(this, 40, 40);
+
+    this.blockSceneUpdate = false;
   }
 
   update() {
     this.score = this.getScore();
-    console.log(this.score);
-
     this.timer.updateTimer(() => {
+      if (this.blockSceneUpdate) return;
       // AJAX REQUEST HERE
       // this.score
+      this.blockSceneUpdate = true;
+      console.log(1);
       this.scene.stop();
       this.playScene.scene.stop();
-      this.scene.start("EndScene");
+      this.scene.start("DeadScene");
     });
   }
 
