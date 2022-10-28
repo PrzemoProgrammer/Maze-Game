@@ -16,6 +16,9 @@ class PlayScene extends Phaser.Scene {
     this.scene.launch("HudScene");
     this.hudScene = this.scene.get("HudScene");
 
+    this.menuScene = this.scene.get("MenuScene");
+    this.selectedSkin = this.menuScene.selectedSkin;
+
     this.spiders = spiders;
 
     this.addMeta();
@@ -28,26 +31,13 @@ class PlayScene extends Phaser.Scene {
 
     this.createGameObjects();
 
-    for (let i = 1; i <= 4; i++) {
-      const frames = [];
-      for (let j = 1; j <= 6; j++) {
-        frames.push({ key: `Character ${i}${j}`, frame: null });
-      }
-
-      const anim = this.anims.create({
-        key: `Character ${i} walk`,
-        frames,
-        frameRate: 20,
-      });
-    }
-
-    this.player = new Player(this, 260, 2040, `Character ${charID}1`);
+    this.player = new Player(this, 260, 2040, this.selectedSkin);
 
     this.player.setCollidesWith([this.wallCategory, this.baseCategory]);
 
-    // this.hudScene.events.on("create", () => {
-    //   this.player.healthBar = this.hudScene.healthBar;
-    // });
+    this.hudScene.events.on("create", () => {
+      this.player.healthBar = this.hudScene.healthBar;
+    });
 
     this.addColliders();
 
@@ -141,6 +131,11 @@ class PlayScene extends Phaser.Scene {
 
       this.player.setCollidesWith([this.wallCategory]);
 
+      this.player.healthBar.getDamage(() => {
+        this.scene.start("DeadScene");
+        // AJAX REQUEST HERE
+        // this.score
+      });
       this.hudScene.timer.subtractTime(5);
       this.player.getHurt(() => {
         this.player.setCollidesWith([this.wallCategory, this.baseCategory]);
@@ -160,6 +155,7 @@ class PlayScene extends Phaser.Scene {
       if (pair.bodyA.isUsed) return;
       pair.bodyA.isUsed = true;
       pair.bodyA.gameObject.destroy();
+      this.player.healthBar.heal();
       this.hudScene.timer.addTime(5);
       // this.lights.lights[0].intensity = 100
       // this.lights.lights[0].radius = 800

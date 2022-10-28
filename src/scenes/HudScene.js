@@ -5,9 +5,9 @@ class HudScene extends Phaser.Scene {
 
   create() {
     this.playScene = this.scene.get("PlayScene");
-    // this.healthBar = new HealthBar(this, 40, 40, "energyBar1");
+    this.healthBar = new HealthBar(this, 40, 30, "life");
     this.score = null;
-    this.timer = new Timer(this, 40, 40);
+    this.timer = new Timer(this, 40, 100);
 
     this.blockSceneUpdate = false;
   }

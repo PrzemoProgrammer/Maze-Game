@@ -29,7 +29,7 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   onMove() {
-    this.play(this.sprite.slice(0, -1) + " walk", true);
+    this.play(this.sprite + " walk", true);
   }
 
   moveLeft() {
@@ -60,7 +60,7 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   setIdle() {
-    // this.character.play(this.state.idle, true);
+    this.stop();
     this.setVelocity(0);
   }
 
