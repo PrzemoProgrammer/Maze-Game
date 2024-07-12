@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="icon" type="image/png" href="./favicon.svg" />
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
-
     <style>
       .jungle {
         width: 280px;
       }
       body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
+        margin: 0px;
+        background-color: rgb(255, 255, 255);
       }
 
       @font-face {
       font-family: "ESCAPE";
-      src: url("/src/ESCAPE.ttf") format("truetype");
+      src: url("./src/ESCAPE.ttf") format("truetype");
     }
     * {
       font-family: "ESCAPE";
@@ -26,25 +22,21 @@
     </style>
   </head>
   <body>
-    <script src="./src/Joystick.js"></script>
-    <script src="./src/objects.js"></script>
-    <script src="./src/spidersPaths.js"></script>
-    <script src="./src/spiders.js"></script>
-    <script src="./src/scenes/PlayScene.js"></script>
-    <script src="./src/scenes/EndGame.js"></script>
-    <script src="./src/scenes/HudScene.js"></script>
-    <script src="./src/scenes/DeadScene.js"></script>
-    <script src="./src/scenes/MenuScene.js"></script>
-    <script src="./src/index.js"></script>
-    <script src="./src/Player.js"></script>
+      <script src="./src/spidersPaths.js"></script>
+      <script src="./src/spiders.js"></script>
+    <script src="./src/Scenes/MenuScene.js"></script>
+    <script src="./src/Scenes/PlayScene.js"></script>
+    <script src="./src/Scenes/HudScene.js"></script>
+    <script src="./src/Scenes/EndGame.js"></script>
+    <script src="./src/Scenes/DeadScene.js"></script>
     <script src="./src/Enemy.js"></script>
     <script src="./src/HandleInputs.js"></script>
     <script src="./src/HealthBar.js"></script>
+    <script src="./src/Joystick.js"></script>
+    <script src="./src/objects.js"></script>
+    <script src="./src/Player.js"></script>
     <script src="./src/Timer.js"></script>
 
-    <img class="jungle" src="/src/assets/jungleText.png" />
-    <div id="GameCanvas"></div>
-    <p>FIND YOUR WAY OUT...</p>
-    <p>BEFORE IT's TOO LATE!</p>
+    <script src="./src/index.js"></script>
   </body>
 </html>
